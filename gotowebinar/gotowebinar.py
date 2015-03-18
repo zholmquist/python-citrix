@@ -13,7 +13,6 @@ class GoToWebinarAPI(object):
         self.organizer_key = ""
 
     def authorize(self, username, password, api_key):
-
         params = {"grant_type":"password","user_id":username,"password":password,"client_id":api_key}
         json_data = self.send_data(url=self.authorize_url, params=params) 
         
