@@ -1,8 +1,6 @@
 import json
 import requests
 
-CITRIX_API_KEY = ""
-
 class GoToWebinarAPI(object):
 
     host = "api.citrixonline.com"
@@ -14,8 +12,9 @@ class GoToWebinarAPI(object):
         self.access_token = ""
         self.organizer_key = ""
 
-    def authorize(self, username, password):
-        params = {"grant_type":"password","user_id":username,"password":password,"client_id":CITRIX_API_KEY}
+    def authorize(self, username, password, api_key):
+
+        params = {"grant_type":"password","user_id":username,"password":password,"client_id":api_key}
         json_data = self.send_data(url=self.authorize_url, params=params) 
         
         if not json_data.get('error', None):
@@ -39,12 +38,12 @@ class GoToWebinarAPI(object):
     def get_webinar(self, webinar_key):
         path = "/organizers/%s/webinars/%s" % (self.organizer_key, webinar_key)
         json_data = self.send_data(path=path)
-        print json_data
+        return json_data
 
     def get_webinar_times(self, webinar_key):
         path = "/organizers/%s/webinars/%s/meetingtimes" % (self.organizer_key, webinar_key)
         json_data = self.send_data(path=path)
-        print json_data
+        return json_data
 
     # REGISTRANT
     def create_registrant(self, webinar_key, registrant_data):
@@ -55,7 +54,7 @@ class GoToWebinarAPI(object):
     def send_data(self, method="GET", url="", path="", params="", headers={}):
 
         if not url:
-            url = "%s//%s%s%s" % (self.protocol, self.host, self.base_path, path)
+            url = "%s://%s%s%s" % (self.protocol, self.host, self.base_path, path)
 
         headers = {"Content-type":"application/json", "Accept":"application/vnd.citrix.g2wapi-v1.1+json"}
         if self.access_token:

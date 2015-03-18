@@ -14,7 +14,7 @@ import gotowebinar
 
 # Authorize
 webinar = GoToWebinarAPI()
-webinar.authorize("username","p@$$w0rD")
+webinar.authorize("username","p@$$w0rD", 'api_key')
 
 # Get Webinars
 webinar.get_upcoming_webinars()
